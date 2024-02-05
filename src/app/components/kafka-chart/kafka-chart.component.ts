@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { KafkaConsumeService } from '../../services/kafka-consume.service';
 
 @Component({
   selector: 'app-kafka-chart',
@@ -15,7 +16,7 @@ export class KafkaChartComponent {
   lineChartOptions: ChartConfiguration['options'];
   lineChartType: ChartType;
 
-  constructor() {
+  constructor(private kafkaConsumeService: KafkaConsumeService) {
     this.lineChartType = 'line';
     this.lineChartData = {
       labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
