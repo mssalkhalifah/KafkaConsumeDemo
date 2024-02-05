@@ -18,23 +18,42 @@ export class KafkaChartComponent {
   constructor() {
     this.lineChartType = 'line';
     this.lineChartData = {
-      labels: [1, 2, 3, 4, 5, 6],
-      datasets: [{ data: [10, 25, 15, 30, 35, 25], label: 'A' }],
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      datasets: [
+        { data: [15, 10, 25, 15, 30, 35, 25, 30, 50, 10, 25], label: 'A' },
+      ],
     };
     this.lineChartOptions = {
+      animation: { duration: 0, easing: 'easeInOutCubic' },
       elements: {
-        line: { tension: 0.5 },
+        line: { tension: 0.5, fill: true },
       },
       plugins: { legend: { display: true } },
+      scales: {
+        y: { max: 100 },
+      },
     };
   }
 
   add() {
     setTimeout(() => {
-      this.lineChartData.labels?.shift();
-      this.lineChartData.labels?.push(this.lineChartData.labels.length + 1);
-      this.lineChartData.datasets.at(0)?.data.shift();
-      this.lineChartData.datasets.at(0)?.data.push(Math.random() * 100);
+      if (this.lineChartData.labels) {
+        for (let i = 0; i < this.lineChartData.labels?.length - 1; i++) {
+          this.lineChartData.labels[i] = this.lineChartData.labels[i + 1];
+        }
+        this.lineChartData.labels[this.lineChartData.labels.length - 1] =
+          Math.trunc(Math.random() * 10);
+      }
+
+      const data = this.lineChartData.datasets.at(0)?.data;
+      if (data) {
+        for (let i = 0; i < data.length - 1; i++) {
+          data[i] = data[i + 1];
+        }
+        data[data.length - 1] = Math.random() * 100;
+        this.lineChartData.datasets.at(0)!.data = data;
+      }
+
       this.chart?.update();
     }, 1000);
   }
